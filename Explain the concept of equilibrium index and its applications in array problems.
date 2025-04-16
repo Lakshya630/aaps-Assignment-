@@ -1,0 +1,103 @@
+Compute the total sum of the array: Calculate the sum of all elements in the array.
+
+Iterate through the array: For each element, subtract it from the total sum and check if the sum of elements to the left of the current index is equal to the remaining sum (i.e., the sum of elements to the right).
+
+Track the sum to the left: Keep a running sum (left_sum) that stores the sum of elements to the left of the current index.
+
+For each index i, if left_sum == total_sum - left_sum - arr[i], then i is an equilibrium index.
+
+Time and Space Complexity:
+Time Complexity: O(n), where n is the length of the array. We perform a linear scan to calculate the total sum and another scan to check for equilibrium.
+
+Space Complexity: O(1), since we only use a few variables to track sums and do not use any additional data structures.
+
+Applications of Equilibrium Index
+The concept of the equilibrium index can be applied in a variety of problems:
+
+Balance Point in Arrays:
+
+The equilibrium index can be used in problems where we need to find the balance point in an array. For example, in a physical system, the equilibrium index might represent a point where the mass distribution on either side of a point is balanced.
+
+Partitioning Problems:
+
+Equilibrium index helps in partitioning an array into two parts where the sum of the elements on both sides is equal. It is used in problems like dividing resources or workloads equally.
+
+Load Balancing:
+
+In load balancing systems, the equilibrium index concept can be applied to find a point where the workload is evenly distributed between two sections of a system, ensuring that no part is overloaded.
+
+Prefix and Suffix Sum Problems:
+
+The equilibrium index is closely related to problems involving prefix and suffix sums. The idea of comparing the sum of the left part with the right part is widely used in optimization and comparison tasks.
+
+Partitioning an Array into Two Equal Sums:
+
+Equilibrium index problems are also used in algorithms that involve partitioning arrays into two subsets with equal sums. The problem is a special case of finding two subsets in an array with equal sums.
+
+Example Problem: Find the Equilibrium Index
+Problem:
+Given an array of integers, find all the equilibrium indices of the array.
+
+Approach:
+Calculate the total sum of the array.
+
+Iterate through the array, maintaining a running sum of elements to the left.
+
+For each index, check if the left sum equals the right sum (total sum minus the current element and the left sum).
+
+If they are equal, the current index is an equilibrium index.
+
+Java Code:
+java
+Copy
+Edit
+import java.util.ArrayList;
+
+public class EquilibriumIndex {
+
+    public static ArrayList<Integer> findEquilibriumIndices(int[] arr) {
+        int n = arr.length;
+        ArrayList<Integer> equilibriumIndices = new ArrayList<>();
+        
+        // Step 1: Calculate total sum of the array
+        int totalSum = 0;
+        for (int i = 0; i < n; i++) {
+            totalSum += arr[i];
+        }
+
+        // Step 2: Initialize left sum to 0
+        int leftSum = 0;
+
+        // Step 3: Iterate through the array to find equilibrium indices
+        for (int i = 0; i < n; i++) {
+            totalSum -= arr[i]; // Reduce the current element from total sum (right sum)
+
+            // If left sum equals right sum, add the current index to the result
+            if (leftSum == totalSum) {
+                equilibriumIndices.add(i);
+            }
+
+            // Update left sum for the next iteration
+            leftSum += arr[i];
+        }
+
+        return equilibriumIndices;
+    }
+
+    public static void main(String[] args) {
+        int[] arr = {1, 3, 5, 2, 2};
+        ArrayList<Integer> result = findEquilibriumIndices(arr);
+        System.out.println("Equilibrium indices: " + result);
+    }
+}
+Explanation of the Code:
+Total Sum Calculation: We first calculate the total sum of the array.
+
+Iterate through the array: For each element, we subtract it from the total sum to get the right sum (remaining sum).
+
+Check for Equilibrium: We compare the left sum with the right sum and add the index to the list of equilibrium indices if they match.
+
+Update Left Sum: After checking the equilibrium condition, we update the left sum to include the current element for the next iteration.
+
+Example:
+For the array [1, 3, 5, 2, 2], the equilibrium index is 2, as the left sum (1 + 3 = 4) is equal to the right sum (2 + 2 = 4) at that point
