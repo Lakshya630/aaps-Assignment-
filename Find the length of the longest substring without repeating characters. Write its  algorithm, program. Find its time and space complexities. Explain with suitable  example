@@ -1,0 +1,81 @@
+Algorithm (Sliding Window + HashSet)
+Initialize a HashSet to store characters in the current window.
+
+Use two pointers: start and end, both starting at 0.
+
+Move end forward:
+
+If s[end] is not in the set, add it and update maxLen.
+
+If s[end] is in the set, remove s[start] from the set and move start forward.
+
+Repeat until end reaches the end of the string.
+
+🧑‍💻 Java Program
+java
+Copy
+Edit
+import java.util.HashSet;
+
+public class LongestUniqueSubstring {
+
+    public static int lengthOfLongestSubstring(String s) {
+        HashSet<Character> set = new HashSet<>();
+        int maxLen = 0;
+        int start = 0;
+
+        for (int end = 0; end < s.length(); end++) {
+            char currentChar = s.charAt(end);
+
+            // If character repeats, remove from start
+            while (set.contains(currentChar)) {
+                set.remove(s.charAt(start));
+                start++;
+            }
+
+            set.add(currentChar);
+            maxLen = Math.max(maxLen, end - start + 1);
+        }
+
+        return maxLen;
+    }
+
+    public static void main(String[] args) {
+        String str = "abcabcbb";
+        int result = lengthOfLongestSubstring(str);
+        System.out.println("Length of longest substring without repeating characters: " + result);
+    }
+}
+🔍 Example
+Given:
+
+css
+Copy
+Edit
+Input: "abcabcbb"
+Step-by-step:
+
+"a" → ✅
+
+"ab" → ✅
+
+"abc" → ✅ (length 3)
+
+"abca" → ✖ (repeat 'a') → remove 'a'
+
+Continue with "bca" → ✅
+
+"bcab" → ✖ (repeat 'b') → final max length = 3
+
+Output:
+
+sql
+Copy
+Edit
+Length of longest substring without repeating characters: 3
+⏱️ Time and Space Complexity
+Time Complexity: O(n)
+(Each character is visited at most twice)
+
+Space Complexity: O(k)
+(Where k is the size of the character set, i.e., 26 for lowercase, 128 for ASCII)
