@@ -1,0 +1,92 @@
+What is an Equilibrium Index?
+An equilibrium index in an array is an index i such that:
+
+sum of elements before i = sum of elements after i
+
+Formally:
+
+Copy
+Edit
+arr[0] + arr[1] + ... + arr[i - 1] == arr[i + 1] + ... + arr[n - 1]
+📘 Algorithm
+Calculate the total sum of all elements.
+
+Initialize leftSum = 0.
+
+Loop through the array:
+
+For each index i, compute rightSum = totalSum - leftSum - arr[i]
+
+If leftSum == rightSum, return i (equilibrium index)
+
+Update leftSum += arr[i]
+
+If no equilibrium index is found, return -1.
+
+🧑‍💻 Java Program
+java
+Copy
+Edit
+public class EquilibriumIndex {
+
+    public static int findEquilibriumIndex(int[] arr) {
+        int totalSum = 0;
+        for (int num : arr) {
+            totalSum += num;
+        }
+
+        int leftSum = 0;
+        for (int i = 0; i < arr.length; i++) {
+            int rightSum = totalSum - leftSum - arr[i];
+
+            if (leftSum == rightSum) {
+                return i; // Found the equilibrium index
+            }
+
+            leftSum += arr[i];
+        }
+
+        return -1; // No equilibrium index found
+    }
+
+    public static void main(String[] args) {
+        int[] arr = {1, 3, 5, 2, 2};
+
+        int index = findEquilibriumIndex(arr);
+        if (index != -1) {
+            System.out.println("Equilibrium index found at: " + index);
+        } else {
+            System.out.println("No equilibrium index found.");
+        }
+    }
+}
+🔍 Example
+Given array:
+
+ini
+Copy
+Edit
+arr = {1, 3, 5, 2, 2}
+Total sum = 13
+Check each index:
+
+i = 0 → leftSum = 0, rightSum = 13 - 0 - 1 = 12 ❌
+
+i = 1 → leftSum = 1, rightSum = 13 - 1 - 3 = 9 ❌
+
+i = 2 → leftSum = 4, rightSum = 13 - 4 - 5 = 4 ✅
+
+✅ Equilibrium index is 2
+
+Output:
+
+pgsql
+Copy
+Edit
+Equilibrium index found at: 2
+⏱️ Time Complexity
+O(n) → One pass for total sum, one for checking equilibrium.
+
+💾 Space Complexity
+O(1) → Only variables used; no extra space.
+
