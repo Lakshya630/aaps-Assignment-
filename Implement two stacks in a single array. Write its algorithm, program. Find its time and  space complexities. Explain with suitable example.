@@ -1,0 +1,196 @@
+Initialization:
+
+Create an array arr of a fixed size n to store both stacks.
+
+Define two pointers: top1 (for Stack 1) and top2 (for Stack 2).
+
+Initially, set top1 to -1 (empty stack) and top2 to n (empty stack).
+
+Push Operation:
+
+To push an element onto Stack 1, check if top1 + 1 is less than top2 (to ensure there is space for both stacks). If there is space, increment top1 and insert the element at arr[top1].
+
+To push an element onto Stack 2, check if top1 + 1 is less than top2 (to ensure there is space for both stacks). If there is space, decrement top2 and insert the element at arr[top2].
+
+Pop Operation:
+
+To pop an element from Stack 1, check if top1 is -1. If it is not, return the element arr[top1] and decrement top1.
+
+To pop an element from Stack 2, check if top2 is n. If it is not, return the element arr[top2] and increment top2.
+
+Peek Operation (optional):
+
+To peek at the top element of Stack 1, return arr[top1].
+
+To peek at the top element of Stack 2, return arr[top2].
+
+Algorithm in Steps:
+Initialize arr to store both stacks, top1 = -1 for Stack 1 and top2 = n for Stack 2.
+
+For push:
+
+Ensure top1 + 1 < top2 to ensure space.
+
+Push onto Stack 1: increment top1 and set arr[top1].
+
+Push onto Stack 2: decrement top2 and set arr[top2].
+
+For pop:
+
+For Stack 1: check if top1 > -1, then return arr[top1] and decrement top1.
+
+For Stack 2: check if top2 < n, then return arr[top2] and increment top2.
+
+Return the element if the stack is not empty, else handle the underflow condition.
+
+🧑‍💻 Java Program:
+java
+Copy
+Edit
+public class TwoStacksInArray {
+
+    private int[] arr;
+    private int top1, top2;
+    private int size;
+
+    // Constructor to initialize the two stacks
+    public TwoStacksInArray(int n) {
+        arr = new int[n];
+        size = n;
+        top1 = -1; // Stack 1 starts from the left
+        top2 = n;  // Stack 2 starts from the right
+    }
+
+    // Push operation for Stack 1
+    public void push1(int value) {
+        if (top1 + 1 < top2) {
+            top1++;
+            arr[top1] = value;
+        } else {
+            System.out.println("Stack Overflow! Cannot push to Stack 1.");
+        }
+    }
+
+    // Push operation for Stack 2
+    public void push2(int value) {
+        if (top1 + 1 < top2) {
+            top2--;
+            arr[top2] = value;
+        } else {
+            System.out.println("Stack Overflow! Cannot push to Stack 2.");
+        }
+    }
+
+    // Pop operation for Stack 1
+    public int pop1() {
+        if (top1 >= 0) {
+            int value = arr[top1];
+            top1--;
+            return value;
+        } else {
+            System.out.println("Stack Underflow! Cannot pop from Stack 1.");
+            return -1;
+        }
+    }
+
+    // Pop operation for Stack 2
+    public int pop2() {
+        if (top2 < size) {
+            int value = arr[top2];
+            top2++;
+            return value;
+        } else {
+            System.out.println("Stack Underflow! Cannot pop from Stack 2.");
+            return -1;
+        }
+    }
+
+    // Peek operation for Stack 1
+    public int peek1() {
+        if (top1 >= 0) {
+            return arr[top1];
+        } else {
+            System.out.println("Stack is empty.");
+            return -1;
+        }
+    }
+
+    // Peek operation for Stack 2
+    public int peek2() {
+        if (top2 < size) {
+            return arr[top2];
+        } else {
+            System.out.println("Stack is empty.");
+            return -1;
+        }
+    }
+
+    public static void main(String[] args) {
+        TwoStacksInArray stacks = new TwoStacksInArray(10);
+
+        // Pushing elements into Stack 1
+        stacks.push1(5);
+        stacks.push1(10);
+
+        // Pushing elements into Stack 2
+        stacks.push2(20);
+        stacks.push2(30);
+
+        // Popping elements from Stack 1
+        System.out.println("Popped from Stack 1: " + stacks.pop1()); // 10
+        System.out.println("Popped from Stack 1: " + stacks.pop1()); // 5
+
+        // Popping elements from Stack 2
+        System.out.println("Popped from Stack 2: " + stacks.pop2()); // 30
+        System.out.println("Popped from Stack 2: " + stacks.pop2()); // 20
+    }
+}
+🔍 Example Walkthrough:
+Array Initialization:
+
+Suppose we initialize the array with size 10: arr = [ , , , , , , , , , ].
+
+top1 = -1 (Stack 1 is empty).
+
+top2 = 10 (Stack 2 is empty).
+
+Push Elements:
+
+push1(5) → top1 = 0, array becomes: [5, , , , , , , , , ].
+
+push1(10) → top1 = 1, array becomes: [5, 10, , , , , , , , ].
+
+push2(20) → top2 = 9, array becomes: [5, 10, , , , , , , , 20].
+
+push2(30) → top2 = 8, array becomes: [5, 10, , , , , , , 30, 20].
+
+Pop Elements:
+
+pop1() → top1 = 0, returns 10, array becomes: [5, , , , , , , , 30, 20].
+
+pop1() → top1 = -1, returns 5, array becomes: [ , , , , , , , , 30, 20].
+
+pop2() → top2 = 9, returns 30, array becomes: [ , , , , , , , , , 20].
+
+pop2() → top2 = 10, returns 20, array becomes: [ , , , , , , , , , ].
+
+Output:
+
+csharp
+Copy
+Edit
+Popped from Stack 1: 10
+Popped from Stack 1: 5
+Popped from Stack 2: 30
+Popped from Stack 2: 20
+⏱️ Time and Space Complexity:
+Time Complexity:
+
+Push and Pop operations take O(1) time, as we just increment/decrement the top pointers and perform the operation at the corresponding index in the array.
+
+Therefore, for n operations, the time complexity is O(n).
+
+Space Complexity:
+
+We only use a single array of size n to store both stacks. The space complexity is O(n).
+
