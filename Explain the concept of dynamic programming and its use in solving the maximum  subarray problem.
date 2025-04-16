@@ -1,0 +1,148 @@
+Dynamic Programming (DP) is a technique used to solve problems by breaking them down into simpler subproblems. It is mainly applied to optimization problems, where the goal is to find the best solution (maximum or minimum) by solving overlapping subproblems.
+
+Key Characteristics of DP:
+
+Optimal Substructure: The problem can be broken down into smaller subproblems that can be solved independently, and the optimal solution to the overall problem can be constructed from the optimal solutions to the subproblems.
+
+Overlapping Subproblems: The subproblems are not independent; the same subproblems are solved multiple times in the process of solving the overall problem.
+
+DP works by storing the results of subproblems (often in a table or array) to avoid redundant calculations. This process is called memoization (top-down approach) or tabulation (bottom-up approach).
+
+Dynamic Programming Approach to the Maximum Subarray Problem:
+The maximum subarray problem is a classical problem in which we are given an array of integers, and we need to find the sum of the contiguous subarray with the largest sum.
+
+The maximum subarray problem can be solved using Dynamic Programming by using the following approach:
+
+Subproblem:
+
+At each position i in the array, we can calculate the maximum sum of the subarray that ends at position i. This is a subproblem, and the solution to this subproblem can help us find the solution to the overall problem.
+
+Recurrence Relation:
+
+To find the maximum subarray sum ending at position i, we have two options:
+
+Include the current element in the subarray: The sum of the subarray will be the sum of the subarray ending at i-1 plus the current element.
+
+Start a new subarray at the current element: The sum will just be the value of the current element.
+
+So, the recurrence relation is:
+
+max_ending_at_i
+=
+max
+⁡
+(
+arr
+[
+𝑖
+]
+,
+max_ending_at_i-1
++
+arr
+[
+𝑖
+]
+)
+max_ending_at_i=max(arr[i],max_ending_at_i-1+arr[i])
+The overall maximum subarray sum will be the maximum of all the subarray sums ending at each index.
+
+Base Case:
+
+The base case is the sum of the subarray that ends at index 0, which is simply arr[0].
+
+Steps for Dynamic Programming Solution:
+Initialize two variables:
+
+max_current: The maximum sum of the subarray that ends at the current index.
+
+max_global: The maximum sum found so far.
+
+Iterate through the array:
+
+For each element, calculate the maximum sum of the subarray that ends at that element using the recurrence relation.
+
+Update max_global to store the maximum of max_global and max_current.
+
+Return max_global as the result.
+
+Example:
+Consider the array arr = [-2, 1, -3, 4, -1, 2, 1, -5, 4].
+
+Initially:
+
+max_current = -2
+
+max_global = -2
+
+At index 1 (element = 1):
+
+max_current = max(1, -2 + 1) = 1
+
+max_global = max(-2, 1) = 1
+
+At index 2 (element = -3):
+
+max_current = max(-3, 1 + (-3)) = -2
+
+max_global = max(1, -2) = 1
+
+At index 3 (element = 4):
+
+max_current = max(4, -2 + 4) = 4
+
+max_global = max(1, 4) = 4
+
+At index 4 (element = -1):
+
+max_current = max(-1, 4 + (-1)) = 3
+
+max_global = max(4, 3) = 4
+
+At index 5 (element = 2):
+
+max_current = max(2, 3 + 2) = 5
+
+max_global = max(4, 5) = 5
+
+At index 6 (element = 1):
+
+max_current = max(1, 5 + 1) = 6
+
+max_global = max(5, 6) = 6
+
+At index 7 (element = -5):
+
+max_current = max(-5, 6 + (-5)) = 1
+
+max_global = max(6, 1) = 6
+
+At index 8 (element = 4):
+
+max_current = max(4, 1 + 4) = 5
+
+max_global = max(6, 5) = 6
+
+After processing the entire array, the maximum subarray sum is 6.
+
+Time and Space Complexity:
+Time Complexity: O(n), where n is the number of elements in the array. We only need to iterate through the array once.
+
+Space Complexity: O(1), as we are only using a few variables to store intermediate results (we don't need any additional data structures).
+
+Algorithm Summary:
+Input: Array arr[] of size n.
+
+Initialize:
+
+max_current = arr[0]
+
+max_global = arr[0]
+
+Loop from index 1 to n-1:
+
+Update max_current as max(max_current + arr[i], arr[i])
+
+Update max_global as max(max_global, max_current)
+
+Output: Return max_global, the maximum subarray sum.
