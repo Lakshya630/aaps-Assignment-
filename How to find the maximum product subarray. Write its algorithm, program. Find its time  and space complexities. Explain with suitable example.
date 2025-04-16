@@ -1,0 +1,125 @@
+Initialization:
+
+Maintain two variables, maxProduct and minProduct, to store the maximum and minimum product up to the current index.
+
+Initialize the result as the first element (maxProduct = minProduct = result = nums[0]).
+
+Iterate Through the Array:
+
+For each element in the array, calculate the current product by considering three possibilities:
+
+Multiply the current number by the previous maximum product.
+
+Multiply the current number by the previous minimum product.
+
+The current number itself (if it's a negative value, it can reset the subarray).
+
+Update the maxProduct and minProduct to store the maximum and minimum values respectively.
+
+Update the Result:
+
+After each iteration, update the result with the maximum of the current product and the maxProduct found so far.
+
+Return the Result:
+
+After processing all the elements, return the result which contains the maximum product of a subarray.
+
+🧑‍💻 Java Program
+java
+Copy
+Edit
+public class MaximumProductSubarray {
+
+    public static int maxProduct(int[] nums) {
+        // Base case: if the array is empty, return 0
+        if (nums.length == 0) {
+            return 0;
+        }
+
+        int maxProduct = nums[0];
+        int minProduct = nums[0];
+        int result = nums[0];
+
+        for (int i = 1; i < nums.length; i++) {
+            // If the current number is negative, swap maxProduct and minProduct
+            if (nums[i] < 0) {
+                int temp = maxProduct;
+                maxProduct = minProduct;
+                minProduct = temp;
+            }
+
+            // Calculate the maximum and minimum products up to the current index
+            maxProduct = Math.max(nums[i], maxProduct * nums[i]);
+            minProduct = Math.min(nums[i], minProduct * nums[i]);
+
+            // Update the result to be the maximum of the current result and maxProduct
+            result = Math.max(result, maxProduct);
+        }
+
+        return result;
+    }
+
+    public static void main(String[] args) {
+        int[] nums = {2, 3, -2, 4};
+        int result = maxProduct(nums);
+        System.out.println("Maximum product of subarray: " + result);
+    }
+}
+🔍 Example
+Let's walk through the example:
+
+Given the array:
+
+ini
+Copy
+Edit
+nums = {2, 3, -2, 4}
+Steps:
+Initialization:
+
+maxProduct = 2, minProduct = 2, result = 2 (First element in the array).
+
+Iterate through the array:
+
+For i = 1, the element is 3:
+
+maxProduct = max(3, 2 * 3) = 6
+
+minProduct = min(3, 2 * 3) = 3
+
+result = max(2, 6) = 6
+
+For i = 2, the element is -2:
+
+Swap maxProduct and minProduct because the element is negative.
+
+maxProduct = max(-2, 3 * -2) = -2
+
+minProduct = min(-2, 6 * -2) = -12
+
+result = max(6, -2) = 6
+
+For i = 3, the element is 4:
+
+maxProduct = max(4, -2 * 4) = 4
+
+minProduct = min(4, -12 * 4) = -48
+
+result = max(6, 4) = 6
+
+After processing all elements, the maximum product subarray is 6.
+
+Output:
+
+yaml
+Copy
+Edit
+Maximum product of subarray: 6
+⏱️ Time and Space Complexity
+Time Complexity:
+
+The time complexity is O(n) because we iterate through the array exactly once. Here n is the number of elements in the array.
+
+Space Complexity:
+
+The space complexity is O(1) because we only use a constant amount of space for storing variables (maxProduct, minProduct, and result).
