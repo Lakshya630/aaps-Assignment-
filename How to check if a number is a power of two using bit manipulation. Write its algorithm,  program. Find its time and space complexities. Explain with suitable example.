@@ -1,0 +1,64 @@
+If n <= 0, return false (because negative numbers and zero cannot be powers of two).
+
+Compute n & (n - 1). If the result is 0, return true; otherwise, return false.
+
+🧑‍💻 Java Program
+java
+Copy
+Edit
+public class PowerOfTwo {
+
+    // Function to check if a number is a power of two using bit manipulation
+    public static boolean isPowerOfTwo(int n) {
+        // A number is a power of two if it is greater than 0 and has only one '1' bit in its binary representation
+        return (n > 0) && (n & (n - 1)) == 0;
+    }
+
+    public static void main(String[] args) {
+        int n = 16; // Example number to check if it is a power of two
+        if (isPowerOfTwo(n)) {
+            System.out.println(n + " is a power of two.");
+        } else {
+            System.out.println(n + " is not a power of two.");
+        }
+    }
+}
+🔍 Example
+Example 1: n = 16
+16 in binary is 10000.
+
+16 - 1 = 15 in binary is 01111.
+
+16 & 15 = 10000 & 01111 = 00000 (result is 0).
+
+Since the result is 0, 16 is a power of two.
+
+Output:
+
+csharp
+Copy
+Edit
+16 is a power of two.
+Example 2: n = 18
+18 in binary is 10010.
+
+18 - 1 = 17 in binary is 10001.
+
+18 & 17 = 10010 & 10001 = 10000 (result is not 0).
+
+Since the result is not 0, 18 is not a power of two.
+
+Output:
+
+csharp
+Copy
+Edit
+18 is not a power of two.
+⏱️ Time and Space Complexity
+Time Complexity:
+
+The operation n & (n - 1) takes constant time O(1). We only perform a few bitwise operations, which take a fixed amount of time regardless of the size of n.
+
+Space Complexity:
+
+The space complexity is O(1) because we are using only a constant amount of extra space for the operations.
