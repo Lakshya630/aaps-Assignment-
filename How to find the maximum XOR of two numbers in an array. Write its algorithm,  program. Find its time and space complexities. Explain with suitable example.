@@ -1,0 +1,136 @@
+Initialize a Trie:
+
+We will create a Trie that stores the binary representations of the numbers in the array.
+
+Insert Numbers into the Trie:
+
+For each number in the array, we insert its binary form (from the most significant bit to the least significant bit) into the Trie.
+
+Calculate XOR for Each Number:
+
+For each number, while inserting it into the Trie, try to find the number already in the Trie that will maximize the XOR by taking the opposite bit at each position. If the opposite bit is not available, we proceed with the same bit.
+
+Return the Maximum XOR:
+
+Keep track of the maximum XOR value during the insertion and traversal.
+
+Algorithm in Steps:
+Convert each number in the array to its binary representation.
+
+Insert each number’s binary representation into the Trie.
+
+For each number, compute its potential XOR with the numbers already in the Trie.
+
+Keep track of the maximum XOR value and return it.
+
+🧑‍💻 Java Program (Trie-based Approach)
+java
+Copy
+Edit
+public class MaximumXOR {
+
+    // Trie Node class
+    static class TrieNode {
+        TrieNode[] children = new TrieNode[2]; // 0 and 1 (binary digits)
+    }
+
+    // Insert number into Trie
+    public static void insert(TrieNode root, int num, int bitLength) {
+        TrieNode node = root;
+        for (int i = bitLength - 1; i >= 0; i--) {
+            int bit = (num >> i) & 1; // Get the i-th bit of num
+            if (node.children[bit] == null) {
+                node.children[bit] = new TrieNode();
+            }
+            node = node.children[bit];
+        }
+    }
+
+    // Find maximum XOR for a number with numbers in the Trie
+    public static int findMaxXOR(TrieNode root, int num, int bitLength) {
+        TrieNode node = root;
+        int maxXOR = 0;
+        for (int i = bitLength - 1; i >= 0; i--) {
+            int bit = (num >> i) & 1; // Get the i-th bit of num
+            int oppositeBit = 1 - bit; // Get the opposite bit
+
+            // Try to find the opposite bit in the Trie to maximize XOR
+            if (node.children[oppositeBit] != null) {
+                maxXOR |= (1 << i); // Set the i-th bit of maxXOR
+                node = node.children[oppositeBit];
+            } else {
+                node = node.children[bit];
+            }
+        }
+        return maxXOR;
+    }
+
+    // Function to find the maximum XOR of two numbers in the array
+    public static int findMaximumXOR(int[] nums) {
+        int maxXOR = 0;
+        int bitLength = 32; // Considering 32-bit integers
+
+        // Initialize the Trie
+        TrieNode root = new TrieNode();
+
+        // Insert the first number into the Trie
+        insert(root, nums[0], bitLength);
+
+        // Iterate through the rest of the numbers and compute the max XOR
+        for (int i = 1; i < nums.length; i++) {
+            maxXOR = Math.max(maxXOR, findMaxXOR(root, nums[i], bitLength));
+            insert(root, nums[i], bitLength);
+        }
+
+        return maxXOR;
+    }
+
+    public static void main(String[] args) {
+        int[] nums = {3, 10, 5, 25, 2, 8}; // Example array
+        int result = findMaximumXOR(nums);
+        System.out.println("Maximum XOR of two numbers in the array: " + result);
+    }
+}
+🔍 Example
+Let's consider the array: [3, 10, 5, 25, 2, 8].
+
+Convert to Binary (32-bit representations):
+
+3 = 00000000000000000000000000000011
+
+10 = 00000000000000000000000000001010
+
+5 = 00000000000000000000000000000101
+
+25 = 00000000000000000000000000011001
+
+2 = 00000000000000000000000000000010
+
+8 = 00000000000000000000000000001000
+
+Trie Construction and Calculation:
+
+The algorithm constructs the Trie by inserting the binary representations of the numbers, and at each step, it tries to maximize the XOR by finding the opposite bits in the Trie.
+
+Maximum XOR Calculation:
+
+After inserting all the numbers into the Trie, the maximum XOR is found to be 28, which is the XOR of 25 and 5 (25 ^ 5 = 28).
+
+Output:
+
+php
+Copy
+Edit
+Maximum XOR of two numbers in the array: 28
+⏱️ Time and Space Complexity
+Time Complexity:
+
+Inserting each number into the Trie takes O(L) time, where L is the number of bits needed to represent the number (typically 32 bits for integers).
+
+For each number, we perform an O(L) operation to compute the XOR. Since there are n numbers in the array, the overall time complexity is O(n * L).
+
+For typical 32-bit integers, L is a constant, so the time complexity can be considered O(n).
+
+Space Complexity:
+
+The Trie stores each number's binary representation. In the worst case, the space complexity for the Trie is O(n * L), where n is the number of elements in the array and L is the number of bits (typically constant for integers).
