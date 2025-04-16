@@ -1,0 +1,89 @@
+Initialize two pointers:
+
+left at the beginning of the array (0 index).
+
+right at the end of the array (n-1 index).
+
+Loop until left is less than right:
+
+Calculate the sum of the numbers at left and right pointers.
+
+If the sum equals the target, return the indices of the two numbers.
+
+If the sum is less than the target, move the left pointer one step to the right (i.e., increase left).
+
+If the sum is greater than the target, move the right pointer one step to the left (i.e., decrease right).
+
+If no such pair is found, return an indication (e.g., null or -1).
+
+🧑‍💻 Java Program
+java
+Copy
+Edit
+public class TwoSumSortedArray {
+
+    public static int[] twoSum(int[] nums, int target) {
+        int left = 0;
+        int right = nums.length - 1;
+
+        while (left < right) {
+            int sum = nums[left] + nums[right];
+
+            if (sum == target) {
+                return new int[]{left, right}; // Return indices
+            } else if (sum < target) {
+                left++; // Move left pointer to the right
+            } else {
+                right--; // Move right pointer to the left
+            }
+        }
+
+        return new int[]{-1, -1}; // Return -1 if no pair is found
+    }
+
+    public static void main(String[] args) {
+        int[] nums = {2, 7, 11, 15};
+        int target = 9;
+
+        int[] result = twoSum(nums, target);
+
+        if (result[0] != -1) {
+            System.out.println("Indices of numbers that add up to " + target + ": [" + result[0] + ", " + result[1] + "]");
+        } else {
+            System.out.println("No pair found.");
+        }
+    }
+}
+🔍 Example
+Given:
+
+java
+Copy
+Edit
+nums = {2, 7, 11, 15}, target = 9
+Start with left = 0 (value 2) and right = 3 (value 15).
+
+Calculate the sum: 2 + 15 = 17 (greater than 9), so move right pointer left (right = 2).
+
+Now, left = 0 and right = 2 (values 2 and 11).
+
+Calculate the sum: 2 + 11 = 13 (greater than 9), so move right pointer left (right = 1).
+
+Now, left = 0 and right = 1 (values 2 and 7).
+
+Calculate the sum: 2 + 7 = 9 (equal to the target).
+
+Output:
+
+pgsql
+Copy
+Edit
+Indices of numbers that add up to 9: [0, 1]
+⏱️ Time and Space Complexity
+Time Complexity: O(n)
+
+We loop through the array once with the two pointers. At each step, either the left pointer increases or the right pointer decreases. This gives us a linear time complexity of O(n).
+
+Space Complexity: O(1)
+
+We only use a few variables (pointers and sum), so the space complexity is constant (O(1)).
