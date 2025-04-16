@@ -1,0 +1,135 @@
+Build the Trie:
+
+Each number is represented as a 32-bit binary string (assuming 32-bit integers).
+
+Insert each number into the Trie, where each bit of the number is inserted as a path (0 or 1) in the tree.
+
+Calculate Maximum XOR:
+
+For each number, traverse the trie to find the number that yields the maximum XOR with it. This is done by trying to pick the opposite bit at each position, which maximizes the XOR result.
+
+Result:
+
+Track the maximum XOR encountered during the process.
+
+🧑‍💻 Java Program
+java
+Copy
+Edit
+class TrieNode {
+    TrieNode[] children;
+    
+    TrieNode() {
+        children = new TrieNode[2]; // Two children: 0 and 1
+    }
+}
+
+public class MaximumXOR {
+    
+    // Function to insert a number into the Trie
+    public static void insert(TrieNode root, int num) {
+        TrieNode node = root;
+        for (int i = 31; i >= 0; i--) {
+            int bit = (num >> i) & 1;
+            if (node.children[bit] == null) {
+                node.children[bit] = new TrieNode();
+            }
+            node = node.children[bit];
+        }
+    }
+    
+    // Function to find the maximum XOR of the current number with numbers in the Trie
+    public static int findMaxXOR(TrieNode root, int num) {
+        TrieNode node = root;
+        int maxXor = 0;
+        for (int i = 31; i >= 0; i--) {
+            int bit = (num >> i) & 1;
+            // Try to take the opposite bit to maximize the XOR
+            int oppositeBit = bit == 0 ? 1 : 0;
+            if (node.children[oppositeBit] != null) {
+                maxXor |= (1 << i); // Set the i-th bit to 1 if we can take the opposite bit
+                node = node.children[oppositeBit];
+            } else {
+                node = node.children[bit];
+            }
+        }
+        return maxXor;
+    }
+    
+    // Function to find the maximum XOR of two numbers in the array
+    public static int findMaximumXOR(int[] nums) {
+        TrieNode root = new TrieNode();
+        int maxXor = 0;
+        
+        for (int num : nums) {
+            insert(root, num); // Insert the number into the Trie
+        }
+        
+        // Now for each number, find the maximum XOR with the Trie
+        for (int num : nums) {
+            maxXor = Math.max(maxXor, findMaxXOR(root, num));
+        }
+        
+        return maxXor;
+    }
+    
+    public static void main(String[] args) {
+        int[] nums = {3, 10, 5, 25, 2, 8};
+        int result = findMaximumXOR(nums);
+        System.out.println("Maximum XOR is: " + result);
+    }
+}
+🔍 Example
+Given the array:
+
+ini
+Copy
+Edit
+nums = [3, 10, 5, 25, 2, 8]
+Steps:
+Build the Trie:
+
+Convert each number to its binary representation and insert into the Trie:
+
+3 = 00000000000000000000000000000011
+
+10 = 00000000000000000000000000001010
+
+5 = 00000000000000000000000000000101
+
+25 = 00000000000000000000000000011001
+
+2 = 00000000000000000000000000000010
+
+8 = 00000000000000000000000000001000
+
+Find Maximum XOR:
+
+Start with the number 3 and try to find a number in the Trie that maximizes the XOR. The result will be obtained by choosing the opposite bit at each position.
+
+Maximum XOR for 3: 25 ^ 3 = 28
+
+Continue the same for other numbers.
+
+Result:
+
+The maximum XOR value found will be 28.
+
+Output:
+
+vbnet
+Copy
+Edit
+Maximum XOR is: 28
+⏱️ Time and Space Complexity
+Time Complexity:
+
+Insert Operation: Inserting a number into the Trie takes O(32) time since we are processing 32 bits for each number (for 32-bit integers).
+
+Finding Maximum XOR: For each number, finding the maximum XOR with the Trie also takes O(32) time.
+
+Therefore, the total time complexity is O(N * 32), where N is the number of elements in the array. This simplifies to O(N).
+
+Space Complexity:
+
+We are using a Trie to store the numbers. The space complexity is proportional to the number of nodes in the Trie, which is O(N * 32), or O(N) in terms of space complexity for N numbers.
