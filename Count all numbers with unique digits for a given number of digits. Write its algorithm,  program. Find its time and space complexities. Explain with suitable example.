@@ -1,0 +1,108 @@
+We can approach this problem by calculating the number of valid numbers for each n digits:
+
+For a 1-digit number, the possible digits are 10 (0 through 9).
+
+For a 2-digit number, the first digit can be any number from 1 to 9, and the second digit can be any number except the first digit (including 0).
+
+For a 3-digit number, the first digit can be any number from 1 to 9, the second digit can be any number except the first digit, and the third digit can be any number except the first two, and so on.
+
+Algorithm:
+Base Case:
+
+If n = 0, return 0 because there are no numbers with 0 digits.
+
+If n = 1, return 10 (the digits from 0 to 9).
+
+General Case:
+
+For each k from 2 to n:
+
+Calculate the number of valid k-digit numbers:
+
+The first digit has 9 choices (since it can't be 0).
+
+The second digit has 9 choices (since it can be any digit except the first digit).
+
+The third digit has 8 choices (since it can be any digit except the first two), and so on.
+
+Add up all the counts for each k from 1 to n.
+
+Return the result.
+
+🧑‍💻 Java Program
+java
+Copy
+Edit
+public class UniqueDigits {
+
+    // Function to count numbers with unique digits
+    public static int countNumbersWithUniqueDigits(int n) {
+        // If n is 0, no number can be formed
+        if (n == 0) {
+            return 0;
+        }
+        
+        // Initialize result as 10 for the 1-digit case (digits 0-9)
+        int result = 10;
+        
+        // For n = 1, we already have 10 (from 0 to 9)
+        int product = 9; // product for the first digit (9 choices for the first digit)
+        
+        // For each additional digit, calculate the number of valid choices
+        for (int i = 2; i <= n; i++) {
+            product *= (11 - i); // for the ith digit, there are (11 - i) choices
+            result += product; // add the number of valid numbers of i digits
+        }
+        
+        return result;
+    }
+
+    public static void main(String[] args) {
+        int n = 3; // Example: counting numbers with 3 unique digits
+        int result = countNumbersWithUniqueDigits(n);
+        System.out.println("Count of numbers with unique digits for n = " + n + ": " + result);
+    }
+}
+🔍 Example
+Let n = 3.
+
+We will count the numbers with unique digits for 1 digit, 2 digits, and 3 digits.
+
+For 1 digit:
+
+The possible digits are 0, 1, 2, ..., 9, so there are 10 numbers.
+
+For 2 digits:
+
+The first digit can be any of 1, 2, ..., 9 (9 choices), and the second digit can be any digit except the first digit (9 choices), so there are 9 * 9 = 81 valid 2-digit numbers.
+
+For 3 digits:
+
+The first digit has 9 choices (any of 1, 2, ..., 9).
+
+The second digit has 9 choices (any digit except the first digit).
+
+The third digit has 8 choices (any digit except the first two digits).
+
+So, the number of 3-digit numbers is 9 * 9 * 8 = 648.
+
+Now, sum these results:
+
+Copy
+Edit
+10 (1-digit) + 81 (2-digits) + 648 (3-digits) = 739
+Output:
+
+sql
+Copy
+Edit
+Count of numbers with unique digits for n = 3: 739
+⏱️ Time and Space Complexity
+Time Complexity:
+
+The algorithm iterates from 2 to n, performing a constant number of operations at each step (multiplication and addition). Thus, the time complexity is O(n), where n is the number of digits.
+
+Space Complexity:
+
+The space complexity is O(1) because the space used does not depend on the input size, only a few integer variables are used.
+
