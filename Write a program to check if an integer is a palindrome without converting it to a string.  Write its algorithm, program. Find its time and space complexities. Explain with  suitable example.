@@ -1,0 +1,77 @@
+If the number is negative, return false (since negative numbers cannot be palindromes).
+
+Initialize a variable reversedHalf to store the reversed half of the number.
+
+While the number is greater than the reversed half:
+
+Multiply reversedHalf by 10 and add the last digit of the number to it.
+
+Divide the number by 10 to remove the last digit.
+
+After the loop, if the number equals the reversed half or the number equals the reversed half divided by 10 (for odd-length numbers), return true. Otherwise, return false.
+
+🧑‍💻 Java Program:
+java
+Copy
+Edit
+public class PalindromeNumber {
+
+    // Function to check if a number is a palindrome
+    public static boolean isPalindrome(int num) {
+        // Handle negative numbers and multiples of 10 (except 0)
+        if (num < 0 || (num % 10 == 0 && num != 0)) {
+            return false;
+        }
+
+        int reversedHalf = 0;
+        // Reverse the number until we reach the halfway point
+        while (num > reversedHalf) {
+            reversedHalf = reversedHalf * 10 + num % 10;
+            num /= 10;
+        }
+
+        // If the number is even length, reversedHalf should equal num
+        // If it's odd length, we can ignore the middle digit by reversedHalf / 10
+        return num == reversedHalf || num == reversedHalf / 10;
+    }
+
+    public static void main(String[] args) {
+        int num1 = 121;
+        int num2 = -121;
+        int num3 = 10;
+
+        System.out.println(num1 + " is a palindrome: " + isPalindrome(num1));  // true
+        System.out.println(num2 + " is a palindrome: " + isPalindrome(num2));  // false
+        System.out.println(num3 + " is a palindrome: " + isPalindrome(num3));  // false
+    }
+}
+🔍 Example Walkthrough:
+Let's walk through the example of checking if 121 is a palindrome:
+
+Initial number: 121
+
+Start reversing the number from the right:
+
+reversedHalf = 0, num = 121
+
+reversedHalf = 1 (after adding the last digit 1), num = 12
+
+reversedHalf = 12 (after adding the last digit 2), num = 1
+
+Now, reversedHalf = 12 and num = 1. Since num <= reversedHalf, we stop the loop.
+
+Compare:
+
+Since the number 121 has an odd number of digits, we check num == reversedHalf / 10. That is 1 == 12 / 10, which is true.
+
+Thus, 121 is a palindrome.
+
+⏱️ Time and Space Complexity:
+Time Complexity:
+
+The time complexity is O(log n), where n is the input number. This is because we are repeatedly dividing the number by 10, which reduces the number of digits by 1 in each iteration. The number of iterations is proportional to the number of digits in the number.
+
+Space Complexity:
+
+The space complexity is O(1). We only use a constant amount of extra space (for the variable reversedHalf), and the solution doesn't require any additional data structures.
+
