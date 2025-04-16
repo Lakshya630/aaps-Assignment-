@@ -1,0 +1,99 @@
+Create an empty hash map map.
+
+Iterate through the array arr:
+
+For each element num in arr, compute the complement as target - num.
+
+Check if the complement exists in map:
+
+If it does, return the current number and the complement as the pair that sums to the target.
+
+If not, add num to the hash map.
+
+If no such pair is found, return null or a suitable message.
+
+Java Program:
+java
+Copy
+Edit
+import java.util.HashMap;
+
+public class TwoSum {
+
+    // Function to find two numbers that add up to the target
+    public static int[] twoSum(int[] nums, int target) {
+        // Step 1: Create a hash map to store the numbers we've seen
+        HashMap<Integer, Integer> map = new HashMap<>();
+        
+        // Step 2: Iterate through the array
+        for (int i = 0; i < nums.length; i++) {
+            int complement = target - nums[i];
+            
+            // Step 3: Check if the complement exists in the map
+            if (map.containsKey(complement)) {
+                return new int[] { map.get(complement), i };
+            }
+            
+            // Step 4: Add the current number to the map
+            map.put(nums[i], i);
+        }
+        
+        // If no pair is found, return null or an empty array
+        return new int[] {};
+    }
+
+    public static void main(String[] args) {
+        int[] nums = { 2, 7, 11, 15 };
+        int target = 9;
+
+        int[] result = twoSum(nums, target);
+
+        if (result.length > 0) {
+            System.out.println("Pair found at indices: " + result[0] + " and " + result[1]);
+        } else {
+            System.out.println("No pair found.");
+        }
+    }
+}
+Explanation:
+Hash Map Construction:
+
+As we iterate through the array, we store the numbers we've encountered so far in the hash map. The map stores the number as the key and its index as the value.
+
+Finding the Pair:
+
+For each number num[i] in the array, we calculate its complement: complement = target - num[i].
+
+We check if the complement is already in the hash map:
+
+If it is, we have found the pair (num[i] and complement) that adds up to the target. We return their indices.
+
+If not, we add num[i] to the map with its index.
+
+Result:
+
+If a valid pair is found, the function returns the indices of the two numbers.
+
+If no valid pair is found after checking all elements, it returns an empty array.
+
+Example:
+Given the array nums = {2, 7, 11, 15} and target = 9:
+
+We start iterating:
+
+At index 0, the current number is 2. The complement is 9 - 2 = 7. The hash map is empty, so we add 2 to the map.
+
+At index 1, the current number is 7. The complement is 9 - 7 = 2. We find that 2 is already in the map (from index 0).
+
+Therefore, the pair (2, 7) at indices 0 and 1 is the solution.
+
+Output:
+
+yaml
+Copy
+Edit
+Pair found at indices: 0 and 1
+Time and Space Complexity:
+Time Complexity: O(n), where n is the number of elements in the array. We iterate through the array once, and each hash map operation (insertion and lookup) takes constant time.
+
+Space Complexity: O(n), where n is the number of elements in the array. We use a hash map to store the elements we've encountered, and in the worst case, we store all n elements.
