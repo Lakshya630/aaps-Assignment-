@@ -1,0 +1,116 @@
+Sort the candidates to handle the uniqueness of combinations easily.
+
+Backtrack starting from an empty combination and explore all possible combinations by:
+
+Including the current number (and repeating it) if it doesn’t exceed the target.
+
+Moving to the next number when the target is exceeded.
+
+Store each valid combination once we find one that sums to the target.
+
+Return the list of all valid combinations.
+
+Steps:
+Sort the given array candidates.
+
+Call a backtracking function that:
+
+Takes a current combination, the current index in the array, and the remaining target.
+
+If the target is zero, it means we've found a valid combination.
+
+Iterate through each number starting from the current index to avoid duplicates and explore both including and excluding the number.
+
+If the target becomes negative, stop exploring further.
+
+Java Program:
+java
+Copy
+Edit
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class CombinationSum {
+
+    // Function to find all unique combinations
+    public static List<List<Integer>> combinationSum(int[] candidates, int target) {
+        List<List<Integer>> result = new ArrayList<>();
+        Arrays.sort(candidates); // Sort to handle uniqueness
+        backtrack(candidates, target, 0, new ArrayList<>(), result);
+        return result;
+    }
+
+    // Helper function for backtracking
+    private static void backtrack(int[] candidates, int target, int start,
+                                  List<Integer> currentCombination, List<List<Integer>> result) {
+        if (target == 0) {
+            result.add(new ArrayList<>(currentCombination)); // If target is met, add to result
+            return;
+        }
+
+        for (int i = start; i < candidates.length; i++) {
+            if (i > start && candidates[i] == candidates[i - 1]) {
+                continue; // Skip duplicates
+            }
+            if (candidates[i] > target) {
+                break; // If the current number exceeds the target, break the loop
+            }
+
+            // Include candidates[i] and continue exploring the combination
+            currentCombination.add(candidates[i]);
+            backtrack(candidates, target - candidates[i], i, currentCombination, result); // Reuse same element
+            currentCombination.remove(currentCombination.size() - 1); // Backtrack
+        }
+    }
+
+    public static void main(String[] args) {
+        // Example array and target
+        int[] candidates = {2, 3, 6, 7};
+        int target = 7;
+
+        // Get all unique combinations
+        List<List<Integer>> result = combinationSum(candidates, target);
+
+        // Print the result
+        System.out.println("All unique combinations:");
+        for (List<Integer> combination : result) {
+            System.out.println(combination);
+        }
+    }
+}
+Explanation of the Example:
+Given the array candidates = [2, 3, 6, 7] and target 7, the goal is to find all unique combinations that sum up to 7.
+
+Sorted array: [2, 3, 6, 7]
+
+Start the backtracking process:
+
+Start with 2: The remaining target is 7 - 2 = 5. We can add 2 again (use it multiple times).
+
+First combination found: [2, 2, 3]
+
+Then consider 3: We check combinations of 3.
+
+Check combination [7] when the target is 7.
+
+Explore other possible combinations like [2, 2, 3].
+
+The valid combinations found are:
+
+csharp
+Copy
+Edit
+[2, 2, 3]
+[7]
+Time and Space Complexity:
+Time Complexity:
+
+The time complexity is O(2^n) in the worst case, where n is the number of elements in the candidates array. This is because the backtracking explores all combinations of the array.
+
+However, due to pruning (skipping invalid combinations), the actual number of combinations is significantly smaller in many cases, but in the worst case, it remains exponential.
+
+Space Complexity:
+
+The space complexity is O(target / min(candidates)) due to the recursive call stack and the list storing the combinations. The maximum depth of recursion is O(target / min(candidates)), where min(candidates) is the smallest candidate, since that determines how many times a number can be used to reach the target.
+
