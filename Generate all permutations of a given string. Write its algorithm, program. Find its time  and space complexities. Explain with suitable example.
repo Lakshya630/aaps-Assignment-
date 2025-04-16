@@ -1,0 +1,83 @@
+Base Case: If the string has only one character, return that string as the only permutation.
+
+Recursion: For each character, swap it with the first character and recursively generate all permutations of the remaining string. After recursion, swap the characters back to ensure that other permutations are not affected.
+
+Continue this process until all characters have been used in the first position.
+
+🧑‍💻 Java Program
+java
+Copy
+Edit
+import java.util.ArrayList;
+import java.util.List;
+
+public class StringPermutations {
+
+    // Helper function to generate permutations
+    public static void permuteHelper(String s, int left, int right, List<String> result) {
+        if (left == right) {
+            result.add(s); // Add permutation to result
+        } else {
+            for (int i = left; i <= right; i++) {
+                // Swap characters at positions 'left' and 'i'
+                s = swap(s, left, i);
+                // Recur to generate permutations for the next characters
+                permuteHelper(s, left + 1, right, result);
+                // Backtrack and swap back to original position
+                s = swap(s, left, i);
+            }
+        }
+    }
+
+    // Helper function to swap characters at two indices
+    public static String swap(String s, int i, int j) {
+        char[] charArray = s.toCharArray();
+        char temp = charArray[i];
+        charArray[i] = charArray[j];
+        charArray[j] = temp;
+        return new String(charArray);
+    }
+
+    // Function to generate all permutations of the string
+    public static List<String> generatePermutations(String s) {
+        List<String> result = new ArrayList<>();
+        permuteHelper(s, 0, s.length() - 1, result);
+        return result;
+    }
+
+    public static void main(String[] args) {
+        String str = "abc";
+        List<String> permutations = generatePermutations(str);
+        System.out.println("Permutations of " + str + ": " + permutations);
+    }
+}
+🔍 Example
+Input:
+java
+Copy
+Edit
+str = "abc"
+Steps:
+Start with the string "abc".
+
+Swap characters and recursively permute:
+
+Swap "a" with "a", recurse → "abc"
+
+Swap "a" with "b", recurse → "bac"
+
+Swap "a" with "c", recurse → "cba"
+
+All possible permutations: "abc", "acb", "bac", "bca", "cab", "cba"
+
+Output:
+less
+Copy
+Edit
+Permutations of abc: [abc, acb, bac, bca, cab, cba]
+⏱️ Time and Space Complexity
+Time Complexity: O(n!)
+The number of permutations of a string is n!, and for each permutation, we perform constant work (swapping and recursion). Hence, the time complexity is O(n!).
+
+Space Complexity: O(n)
+The space complexity is O(n) due to the recursion stack and temporary space for storing the permutations. The recursion depth is at most n (the length of the string).
