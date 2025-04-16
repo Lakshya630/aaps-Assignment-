@@ -1,0 +1,77 @@
+A palindrome mirrors around its center.
+
+For each index i in the string, consider it as the center and expand in both directions to check for:
+
+Odd-length palindrome: center at i
+
+Even-length palindrome: center at i and i+1
+
+Keep track of the longest palindrome found.
+
+🧑‍💻 Java Program
+java
+Copy
+Edit
+public class LongestPalindromicSubstring {
+
+    // Function to expand from center
+    public static String expandAroundCenter(String s, int left, int right) {
+        while (left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
+            left--;
+            right++;
+        }
+        return s.substring(left + 1, right);
+    }
+
+    public static String longestPalindrome(String s) {
+        if (s == null || s.length() < 1) return "";
+
+        String longest = "";
+
+        for (int i = 0; i < s.length(); i++) {
+            // Check odd-length palindrome
+            String odd = expandAroundCenter(s, i, i);
+            // Check even-length palindrome
+            String even = expandAroundCenter(s, i, i + 1);
+
+            // Get the longer one
+            String currentLongest = odd.length() > even.length() ? odd : even;
+
+            if (currentLongest.length() > longest.length()) {
+                longest = currentLongest;
+            }
+        }
+
+        return longest;
+    }
+
+    public static void main(String[] args) {
+        String input = "babad";
+        String result = longestPalindrome(input);
+        System.out.println("Longest palindromic substring: " + result);
+    }
+}
+🔍 Example
+Input:
+arduino
+Copy
+Edit
+"babad"
+Possible palindromes:
+"bab"
+
+"aba"
+
+Both are valid. The program may return either of them.
+
+Output:
+yaml
+Copy
+Edit
+Longest palindromic substring: bab
+⏱️ Time and Space Complexity
+Time Complexity: O(n^2)
+We check O(n) centers and expand around each in O(n) time.
+
+Space Complexity: O(1)
+(No extra data structures used except temporary variables)
