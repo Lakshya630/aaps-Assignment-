@@ -1,0 +1,79 @@
+Initialize a hash map to store the frequency of each element.
+
+Iterate through the array:
+
+For each element, update its frequency in the hash map.
+
+After processing the array, find the element with the maximum frequency.
+
+Return the element with the highest frequency.
+
+Java Program:
+java
+Copy
+Edit
+import java.util.HashMap;
+import java.util.Map;
+
+public class MaxFrequencyElement {
+
+    // Function to find the element with maximum frequency
+    public static int findMaxFrequencyElement(int[] arr) {
+        // Step 1: Create a hash map to store the frequency of each element
+        HashMap<Integer, Integer> frequencyMap = new HashMap<>();
+
+        // Step 2: Count the frequency of each element
+        for (int num : arr) {
+            frequencyMap.put(num, frequencyMap.getOrDefault(num, 0) + 1);
+        }
+
+        // Step 3: Find the element with maximum frequency
+        int maxFrequency = 0;
+        int maxElement = arr[0]; // Initialize with the first element
+        for (Map.Entry<Integer, Integer> entry : frequencyMap.entrySet()) {
+            if (entry.getValue() > maxFrequency) {
+                maxFrequency = entry.getValue();
+                maxElement = entry.getKey();
+            }
+        }
+
+        // Step 4: Return the element with the highest frequency
+        return maxElement;
+    }
+
+    public static void main(String[] args) {
+        // Example array
+        int[] arr = {3, 1, 4, 2, 3, 4, 3};
+
+        // Find the element with the maximum frequency
+        int result = findMaxFrequencyElement(arr);
+
+        // Print the result
+        System.out.println("Element with maximum frequency: " + result);
+    }
+}
+Explanation of the Example:
+Given the array arr = {3, 1, 4, 2, 3, 4, 3}, we need to find the element that appears the most frequently:
+
+We first count the frequency of each element:
+
+3 appears 3 times.
+
+1 appears 1 time.
+
+4 appears 2 times.
+
+2 appears 1 time.
+
+The element with the highest frequency is 3 with a frequency of 3.
+
+So, the result is 3.
+
+Time and Space Complexity:
+Time Complexity:
+
+O(n), where n is the number of elements in the array. We traverse the array once to build the frequency map and then iterate over the map (which has at most n entries) to find the element with the highest frequency.
+
+Space Complexity:
+
+O(n), since we store the frequencies of all distinct elements in the hash map. In the worst case, where all elements are distinct, the space complexity will be proportional to the number of elements n.
