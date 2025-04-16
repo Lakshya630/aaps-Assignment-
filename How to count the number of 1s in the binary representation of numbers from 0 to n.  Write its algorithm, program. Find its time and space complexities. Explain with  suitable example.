@@ -1,0 +1,80 @@
+Base Case:
+
+Initialize an array count[] where count[i] stores the number of 1s in the binary representation of i.
+
+Iterate from 1 to n:
+
+For each number i, use the relation:
+
+If i is even: count[i] = count[i / 2]
+
+If i is odd: count[i] = 1 + count[i / 2]
+
+Sum up all count[i] values for i from 0 to n.
+
+Return the result.
+
+🧑‍💻 Java Program
+java
+Copy
+Edit
+public class CountBits {
+
+    // Function to count number of 1s in binary representations from 0 to n
+    public static int countBits(int n) {
+        int totalCount = 0;
+        
+        // Create an array to store count of 1s for each number from 0 to n
+        int[] count = new int[n + 1];
+        
+        // Fill the count array using dynamic programming approach
+        for (int i = 1; i <= n; i++) {
+            count[i] = count[i >> 1] + (i & 1);  // i >> 1 is equivalent to i / 2
+            totalCount += count[i];
+        }
+        
+        return totalCount;
+    }
+
+    public static void main(String[] args) {
+        int n = 5; // Example: count the number of 1s in binary representations from 0 to 5
+        int result = countBits(n);
+        System.out.println("Total number of 1s in binary representations from 0 to " + n + ": " + result);
+    }
+}
+🔍 Example
+Let n = 5.
+
+We will count the number of 1s in the binary representations of the numbers from 0 to 5:
+
+0 = 000 (0 ones)
+
+1 = 001 (1 one)
+
+2 = 010 (1 one)
+
+3 = 011 (2 ones)
+
+4 = 100 (1 one)
+
+5 = 101 (2 ones)
+
+Now, summing the number of 1s in all binary representations:
+
+Copy
+Edit
+0 + 1 + 1 + 2 + 1 + 2 = 7
+Output:
+
+vbnet
+Copy
+Edit
+Total number of 1s in binary representations from 0 to 5: 7
+⏱️ Time and Space Complexity
+Time Complexity:
+
+We iterate from 1 to n and calculate the number of 1s for each number in constant time. Hence, the time complexity is O(n).
+
+Space Complexity:
+
+We use an array count[] of size n + 1 to store the number of 1s for each number from 0 to n. Therefore, the space complexity is O(n).
