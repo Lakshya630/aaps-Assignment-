@@ -1,0 +1,104 @@
+Start with the first index and recursively generate permutations.
+
+Swap the element at the current index with each element that has not been swapped yet.
+
+When the index reaches the last element, add the current arrangement to the result.
+
+Backtrack by swapping the elements back to explore other possibilities.
+
+Steps:
+Recursive Call: Start at index 0. For each element from index 0 to n-1, swap it with the element at index 0 and recursively generate the remaining permutations for the subarray starting from index 1.
+
+Backtrack: After generating the permutations, swap back to the original configuration and continue to the next iteration.
+
+Java Program:
+java
+Copy
+Edit
+import java.util.ArrayList;
+import java.util.List;
+
+public class Permutations {
+
+    // Function to generate all permutations of a given array
+    public static List<List<Integer>> permute(int[] nums) {
+        List<List<Integer>> result = new ArrayList<>();
+        backtrack(nums, result, 0);
+        return result;
+    }
+
+    // Helper function for backtracking
+    private static void backtrack(int[] nums, List<List<Integer>> result, int start) {
+        if (start == nums.length) {
+            List<Integer> currentPermutation = new ArrayList<>();
+            for (int num : nums) {
+                currentPermutation.add(num);
+            }
+            result.add(currentPermutation);  // Add current permutation to result
+            return;
+        }
+
+        for (int i = start; i < nums.length; i++) {
+            // Swap the element at index `start` with the element at index `i`
+            swap(nums, start, i);
+            
+            // Recur with the next index
+            backtrack(nums, result, start + 1);
+            
+            // Backtrack: Swap back the elements
+            swap(nums, start, i);
+        }
+    }
+
+    // Function to swap elements in the array
+    private static void swap(int[] nums, int i, int j) {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
+
+    public static void main(String[] args) {
+        // Example array
+        int[] nums = {1, 2, 3};
+
+        // Get all permutations
+        List<List<Integer>> result = permute(nums);
+
+        // Print the result
+        System.out.println("All permutations:");
+        for (List<Integer> permutation : result) {
+            System.out.println(permutation);
+        }
+    }
+}
+Explanation of the Example:
+Given the array nums = [1, 2, 3], we generate all permutations of the array. The possible permutations are:
+
+[1, 2, 3]
+
+[1, 3, 2]
+
+[2, 1, 3]
+
+[2, 3, 1]
+
+[3, 1, 2]
+
+[3, 2, 1]
+
+The program works by swapping each element with the current element and recursively generating permutations for the remaining elements. Once we reach the end of the array, we have a complete permutation, which is then added to the result.
+
+Time and Space Complexity:
+Time Complexity:
+
+The total number of permutations of n elements is n!. For each permutation, we need to perform a number of operations proportional to n (for swapping and adding to the result).
+
+Thus, the overall time complexity is O(n * n!), where n is the length of the array.
+
+Space Complexity:
+
+We use O(n!) space to store all the permutations (since there are n! permutations).
+
+Additionally, the recursion stack depth is O(n) because we make recursive calls for each index of the array.
+
+Therefore, the overall space complexity is O(n!)
