@@ -1,0 +1,77 @@
+If the list is empty, return an empty string.
+
+Start by assuming the first string is the longest common prefix.
+
+Compare this prefix with each subsequent string:
+
+For each string, reduce the common prefix by comparing characters from left to right until you find a mismatch.
+
+If at any point, the common prefix becomes empty, return an empty string.
+
+Continue until all strings are processed, and return the final common prefix.
+
+🧑‍💻 Java Program
+java
+Copy
+Edit
+public class LongestCommonPrefix {
+
+    public static String longestCommonPrefix(String[] strs) {
+        if (strs == null || strs.length == 0) {
+            return "";
+        }
+
+        // Start with the first string as the initial prefix
+        String prefix = strs[0];
+
+        for (int i = 1; i < strs.length; i++) {
+            // Compare current prefix with each string
+            while (strs[i].indexOf(prefix) != 0) {
+                // Reduce prefix by 1 character until it matches
+                prefix = prefix.substring(0, prefix.length() - 1);
+                if (prefix.isEmpty()) {
+                    return "";
+                }
+            }
+        }
+
+        return prefix;
+    }
+
+    public static void main(String[] args) {
+        String[] strs = {"flower", "flow", "flight"};
+        String result = longestCommonPrefix(strs);
+        System.out.println("Longest common prefix: " + result);
+    }
+}
+🔍 Example
+Input:
+java
+Copy
+Edit
+strs = {"flower", "flow", "flight"}
+Start with the prefix "flower".
+
+Compare it with "flow". Reduce the prefix to "flow".
+
+Compare "flow" with "flight". Reduce it to "fl".
+
+The common prefix among all strings is "fl".
+
+Output:
+swift
+Copy
+Edit
+Longest common prefix: fl
+⏱️ Time and Space Complexity
+Time Complexity: O(n * m)
+Where:
+
+n is the number of strings.
+
+m is the length of the shortest string in the list.
+
+We compare each string with the prefix, and for each comparison, we may scan the entire string.
+
+Space Complexity: O(1)
+We only use a few variables (constant space), except for the input list of strings.
