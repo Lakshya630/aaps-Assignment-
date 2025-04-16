@@ -1,0 +1,111 @@
+Approach 1: Using Min-Heap
+Initialize a Min-Heap:
+
+Insert the first element of each row into the heap. The heap will store tuples of the form (value, row, column) to keep track of which element we are considering in the matrix.
+
+Extract k times from the heap:
+
+Extract the smallest element (i.e., the root of the heap).
+
+If the element extracted is from (i, j), the next element in that row is (i, j+1). Push this element into the heap.
+
+Return the k-th smallest element:
+
+After extracting k elements, the k-th extracted element will be the k-th smallest.
+
+🧑‍💻 Java Program
+java
+Copy
+Edit
+import java.util.*;
+
+public class KthSmallestInSortedMatrix {
+
+    public static int kthSmallest(int[][] matrix, int k) {
+        int n = matrix.length;
+        PriorityQueue<int[]> minHeap = new PriorityQueue<>(Comparator.comparingInt(a -> a[0]));
+
+        // Push the first element of each row into the heap
+        for (int i = 0; i < n; i++) {
+            minHeap.offer(new int[]{matrix[i][0], i, 0}); // {value, row, col}
+        }
+
+        // Extract min k times
+        for (int i = 1; i < k; i++) {
+            int[] curr = minHeap.poll();
+            int row = curr[1], col = curr[2];
+
+            // If there's another element in the same row, push it to the heap
+            if (col + 1 < n) {
+                minHeap.offer(new int[]{matrix[row][col + 1], row, col + 1});
+            }
+        }
+
+        // The root of the heap is the k-th smallest element
+        return minHeap.poll()[0];
+    }
+
+    public static void main(String[] args) {
+        int[][] matrix = {
+            {1, 5, 9},
+            {10, 11, 13},
+            {12, 13, 15}
+        };
+        int k = 8;
+        int result = kthSmallest(matrix, k);
+        System.out.println("The " + k + "-th smallest element is: " + result);
+    }
+}
+🔍 Example
+Given the matrix:
+
+ini
+Copy
+Edit
+matrix = [
+    {1, 5, 9},
+    {10, 11, 13},
+    {12, 13, 15}
+]
+We want to find the 8th smallest element.
+
+Steps:
+Min-Heap Initialization:
+
+Push the first element of each row into the heap: {1, 10, 12}.
+
+Heap Operations:
+
+Extract the minimum: 1. The next element in row 1 is 5, so push {5, 0, 1}.
+
+Extract the minimum: 5. The next element in row 0 is 9, so push {9, 0, 2}.
+
+Extract the minimum: 9. The next element in row 1 is 10, so push {10, 1, 1}.
+
+Extract the minimum: 10. The next element in row 2 is 11, so push {11, 1, 2}.
+
+Extract the minimum: 11. The next element in row 1 is 13, so push {13, 1, 3}.
+
+Extract the minimum: 12. The next element in row 2 is 13, so push {13, 2, 2}.
+
+Extract the minimum: 13. The next element in row 2 is 15, so push {15, 2, 3}.
+
+Extract the minimum: 13 again. No more elements in the current row.
+
+The 8th smallest element is 13.
+
+Output:
+
+csharp
+Copy
+Edit
+The 8-th smallest element is: 13
+⏱️ Time and Space Complexity
+Time Complexity:
+
+The heap operations (insertion and extraction) each take O(log n) time, and there are at most k extractions. Each insertion operation involves pushing the next element from a row, and there are n rows. Therefore, the time complexity is O(k log n), where k is the number of elements to extract and n is the size of the matrix (since the matrix is n x n).
+
+Space Complexity:
+
+The space complexity is O(n), where n is the number of rows (or columns, since the matrix is square). We store at most one element per row in the heap.
+
